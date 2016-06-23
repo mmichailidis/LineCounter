@@ -44,12 +44,10 @@ public class Application {
             System.out.println( lineNumb + ". " + vLookUp.getFileName() + " has : " + vLookUp.getLineCount() + " lines...");
             lineNumb++;
             
-            if( !filter.isEmpty() ) {
-                for(String vString:filter) {
-                    if ( vLookUp.getFileName().contains(vString) ) {
-                        flag = false;
-                    }                    
-                }
+            for(String vString:filter) {
+                if ( vLookUp.getFileName().contains(vString) ) {
+                    flag = false;
+                }                    
             }
             
             if ( flag ) {
