@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,10 +21,14 @@ public class Application {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
+        List<String> filter = new ArrayList<>();
+        
         File f = null;
-        if (args.length > 0 ) {
+        if( args.length > 0 ) {
             f = new File(args[0]);            
         }
+        
+        filter.addAll(Arrays.asList(args).subList(1, args.length));
         
         if (f != null && f.isDirectory()) {
             findFiles(f.getPath());
@@ -35,14 +40,21 @@ public class Application {
         int count = 0 ;
         int lineNumb = 1 ;
         for ( Pair vLookUp:MY_LIST ) {
+            boolean flag = true;
             System.out.println( lineNumb + ". " + vLookUp.getFileName() + " has : " + vLookUp.getLineCount() + " lines...");
             lineNumb++;
             
-            if ( vLookUp.getFileName().contains("plsql") ) {
-                continue;
+            if( !filter.isEmpty() ) {
+                for(String vString:filter) {
+                    if ( vLookUp.getFileName().contains(vString) ) {
+                        flag = false;
+                    }                    
+                }
             }
             
-            count += vLookUp.getLineCount();
+            if ( flag ) {
+                count += vLookUp.getLineCount();                
+            }
         }
         
         System.out.println("Total lines : " + count);
